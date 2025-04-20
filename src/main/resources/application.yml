@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: moneyminder-gateway
+  cloud:
+    gateway:
+        mvc:
+          routes:
+            - id: moneyminder-expenses
+              uri: http://localhost:18081
+              predicates:
+                - Path=/api/expenses/**
+              filters:
+                - StripPrefix=2
+            - id: moneyminder-users
+              uri: http://localhost:18082
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=2
+#            - id: moneyminder-oauth
+#              uri: http://localhost:9100
+#              predicates:
+#                - Path=/api/security/**
+#              filters:
+#                - StripPrefix=2
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:18082/.well-known/jwks.json
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
