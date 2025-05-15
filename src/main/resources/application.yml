@@ -4,13 +4,13 @@ spring:
       mvc:
         routes:
           - id: moneyminder-expenses
-            uri: http://expenses:18081
+            uri: ${EXPENSES_URL}
             predicates:
               - Path=/api/expenses/**
             filters:
               - StripPrefix=2
           - id: moneyminder-users
-            uri: http://users:18082
+            uri: ${USERS_URL}
             predicates:
               - Path=/api/users/**
             filters:
@@ -20,7 +20,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://users:18082/.well-known/jwks.json
+          jwk-set-uri: ${JWK_SET_URI}
 
 logging:
   level:
