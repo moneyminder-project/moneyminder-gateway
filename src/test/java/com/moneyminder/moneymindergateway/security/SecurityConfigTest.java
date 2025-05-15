@@ -11,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -62,6 +63,8 @@ class SecurityConfigTest {
     @Test
     @DisplayName("CORS configuration source bean creation test")
     void corsConfigurationSourceTest() {
+        ReflectionTestUtils.setField(securityConfig, "allowedOrigins", "http://localhost:5173,http://localhost:8180");
+
         CorsConfigurationSource source = securityConfig.corsConfigurationSource();
         assertNotNull(source);
 
