@@ -3,6 +3,7 @@ package com.moneyminder.moneymindergateway.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,22 +25,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
         return http
-            .cors(Customizer.withDefaults())
-            .authorizeHttpRequests(exchanges -> exchanges
-                .requestMatchers(
-                    "/api/users/user/new-user",
-                    "/api/users/auth/login",
-                    "/api/users/swagger-ui/**",
-                    "/api/users/v3/api-docs/**",
-                    "/api/expenses/swagger-ui/**",
-                    "/api/expenses/v3/api-docs/**"
-            ).permitAll()
-                .anyRequest().authenticated()
-            )
-            .oauth2ResourceServer(oauth2 -> oauth2
-                    .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-            .csrf(AbstractHttpConfigurer::disable)
-            .build();
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(exchanges -> exchanges
+                        .requestMatchers(
+                                HttpMethod.OPTIONS, "/**",
+                                "/api/users/user/new-user",
+                                "/api/users/auth/login",
+                                "/api/users/swagger-ui/**",
+                                "/api/users/v3/api-docs/**",
+                                "/api/expenses/swagger-ui/**",
+                                "/api/expenses/v3/api-docs/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+                .csrf(AbstractHttpConfigurer::disable)
+                .build();
     }
 
     @Bean
