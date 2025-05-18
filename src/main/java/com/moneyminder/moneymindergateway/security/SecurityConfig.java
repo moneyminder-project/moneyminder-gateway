@@ -28,7 +28,6 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(exchanges -> exchanges
                         .requestMatchers(
-                                HttpMethod.OPTIONS, "/**",
                                 "/api/users/user/new-user",
                                 "/api/users/auth/login",
                                 "/api/users/swagger-ui/**",
