@@ -26,10 +26,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(exchanges -> exchanges
                         .requestMatchers(
-                                HttpMethod.OPTIONS, "/**",
                                 "/api/users/user/new-user",
                                 "/api/users/auth/login",
                                 "/api/users/swagger-ui/**",
@@ -41,6 +39,7 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
